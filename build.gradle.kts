@@ -17,9 +17,17 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
+	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	// Bolt framework for being a slack bot
+	implementation("com.slack.api:bolt:1.8.0")
+	implementation("com.slack.api:bolt-servlet:1.8.0")
+
+	// JSoup for parsing HTML
+	implementation("org.jsoup:jsoup:1.13.1")
 }
 
 tasks.withType<KotlinCompile> {
