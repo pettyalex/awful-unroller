@@ -1,0 +1,12 @@
+[Unit]
+Description=awful-unroller
+After=syslog.target
+
+[Service]
+WorkingDirectory=/opt/awful-unroller
+EnvironmentFile=awful-environment
+ExecStart=/usr/bin/java -jar awfulparser.jar
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

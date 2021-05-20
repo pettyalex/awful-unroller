@@ -13,7 +13,6 @@ class SlackApp {
     @Bean
     fun initSlackApp(postUnroller: PostUnroller): App {
         val app = App()
-        app.command("/hello") { req, ctx -> ctx.ack("Hi there!") }
         app.event(LinkSharedEvent::class.java, postUnroller::unrollPost)
         return app
     }
