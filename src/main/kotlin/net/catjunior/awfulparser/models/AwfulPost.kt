@@ -12,6 +12,9 @@ data class AwfulPost(
 
 interface PostElement {
     fun toSlackBlock(): LayoutBlock
+    fun canCombineWith(element: PostElement): Boolean {
+        return false
+    }
 }
 
 class TextPostElement(private val text: String) : PostElement {
@@ -24,6 +27,16 @@ class TextPostElement(private val text: String) : PostElement {
 class ImagePostElement(private val url: String) : PostElement {
     override fun toSlackBlock(): LayoutBlock {
         return ImageBlock.builder().imageUrl(url).build()
+    }
+}
+
+/**
+ * <https://google.com|this is a link>
+ */
+class LinkPostElement(private val url: String, private val displayText: String) : PostElement {
+    override fun toSlackBlock(): LayoutBlock {
+        val textObject = MarkdownTextObject.builder().text("<$url|$displayText>").build()
+        return SectionBlock.builder().text(textObject).build()
     }
 }
 

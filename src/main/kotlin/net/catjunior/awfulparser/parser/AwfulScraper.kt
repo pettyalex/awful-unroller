@@ -6,6 +6,7 @@ import net.catjunior.awfulparser.models.TextPostElement
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import org.jsoup.nodes.Node
 import org.jsoup.nodes.TextNode
 import org.jsoup.select.Elements
 import org.springframework.stereotype.Component
@@ -47,6 +48,22 @@ class AwfulScraper {
             postElements.add(TextPostElement("*$username posted:*"))
             postElements.addAll(postBodyWithoutQuotes.map { TextPostElement(it) })
             return AwfulPost(postElements)
+        }
+
+        /**
+         * Gets a post as an ordered list of elements that we want to render into Slack.
+         * Right now, these are text, images, and links (including emoticons)
+         * These will be combined into slack blocks conditionally
+         */
+        fun getPostElementsForSlack(url: String): List<Node> {
+            val allPostElements = getPost(url).selectFirst("td.postbody").childNodes()
+
+            /**
+             * Combine text, links, and emoji where they should be combined.
+             * Start a new section when there's a break. Skip empty text.
+             */
+
+            return allPostElements
         }
     }
 }
