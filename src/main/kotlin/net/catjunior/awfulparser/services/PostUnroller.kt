@@ -44,10 +44,8 @@ class PostUnroller {
             links.forEach { link ->
                 val correctedUrl = link.url.replace("&amp;", "&")
                 // TODO: Problem with the new version, it won't parse
-                val postElements = AwfulScraper.getPostElementsForSlack(correctedUrl)
-                val blocks = processElementsIntoSections(postElements)
-//                val postText = AwfulScraper.getFullPostWithAuthor(correctedUrl)
-//                val blocks = postText.elements.map { it.toSlackBlock() }
+                val (authorBlock, postElements) = AwfulScraper.getPostElementsForSlack(correctedUrl)
+                val blocks = processElementsIntoSections(authorBlock, postElements)
                 val unfurlDetail = ChatUnfurlRequest.UnfurlDetail()
                 unfurlDetail.blocks = blocks
 
@@ -69,8 +67,8 @@ class PostUnroller {
         return ctx.ack()
     }
 
-    fun processElementsIntoSections(postElements: List<Node>): List<LayoutBlock> {
-        val outputBlocks = mutableListOf<LayoutBlock>()
+    fun processElementsIntoSections(authorBlock: SectionBlock, postElements: List<Node>): List<LayoutBlock> {
+        val outputBlocks = mutableListOf<LayoutBlock>(authorBlock)
         var currentTextBeingBuilt = String() // used to put together links, text, and emoticons
 
         for (element in postElements) {
@@ -100,7 +98,8 @@ class PostUnroller {
 
                     val imageUrl = element.attr("src")
 
-                    val imageBlock = ImageBlock.builder().imageUrl(imageUrl).altText("Image from somethingawful post").build()
+                    val imageBlock =
+                        ImageBlock.builder().imageUrl(imageUrl).altText("Image from somethingawful post").build()
                     outputBlocks.add(imageBlock)
                 }
             }

@@ -1,5 +1,7 @@
 package net.catjunior.awfulparser.parser
 
+import com.slack.api.model.block.SectionBlock
+import com.slack.api.model.block.composition.MarkdownTextObject
 import net.catjunior.awfulparser.models.AwfulPost
 import net.catjunior.awfulparser.models.PostElement
 import net.catjunior.awfulparser.models.TextPostElement
@@ -53,17 +55,19 @@ class AwfulScraper {
         /**
          * Gets a post as an ordered list of elements that we want to render into Slack.
          * Right now, these are text, images, and links (including emoticons)
-         * These will be combined into slack blocks conditionally
+         * These will be combined into slack blocks conditionally.
+         *
+         * Returns one pre-built block with author information
          */
-        fun getPostElementsForSlack(url: String): List<Node> {
-            val allPostElements = getPost(url).selectFirst("td.postbody").childNodes()
+        fun getPostElementsForSlack(url: String): Pair<SectionBlock, List<Node>> {
+            val post = getPost(url)
+            val author = post.select("dt.author").text()
+            val allPostElements = post.selectFirst("td.postbody").childNodes()
 
-            /**
-             * Combine text, links, and emoji where they should be combined.
-             * Start a new section when there's a break. Skip empty text.
-             */
+            val authorSectionBlock =
+                SectionBlock.builder().text(MarkdownTextObject.builder().text("*$author posted:*").build()).build()
 
-            return allPostElements
+            return Pair(authorSectionBlock, allPostElements)
         }
     }
 }
