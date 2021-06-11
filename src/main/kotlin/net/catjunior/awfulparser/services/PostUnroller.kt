@@ -37,6 +37,7 @@ class PostUnroller {
     fun unrollPost(req: EventsApiPayload<LinkSharedEvent>, ctx: EventContext): Response {
         ctx.ack() // ack first
         val unfurlsByUrl = mutableMapOf<String, ChatUnfurlRequest.UnfurlDetail>()
+        logger.info("Unrolling ${req.event.links} from ${ctx.teamId}")
 
         try {
             // https://api.slack.com/reference/messaging/link-unfurling
