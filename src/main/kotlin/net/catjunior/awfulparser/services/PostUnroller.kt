@@ -18,6 +18,10 @@ import org.springframework.stereotype.Service
 
 @Service
 class PostUnroller {
+    companion object {
+        private val EMOTICON_REGEX = Regex("^:.*:$")
+    }
+
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     // This doesn't need to be lazy, I just needed to configure the errorDetail
@@ -37,14 +41,14 @@ class PostUnroller {
     fun unrollPost(req: EventsApiPayload<LinkSharedEvent>, ctx: EventContext): Response {
         ctx.ack() // ack first
         val unfurlsByUrl = mutableMapOf<String, ChatUnfurlRequest.UnfurlDetail>()
-        logger.info("Unrolling ${req.event.links} from ${ctx.teamId}")
+        logger.info("Unrolling ${req.event.links} from user ${req.event.user} in channel ${req.event.channel} in workspace ${ctx.teamId}")
 
         try {
             // https://api.slack.com/reference/messaging/link-unfurling
             val links = req.event.links
             links.forEach { link ->
                 val correctedUrl = link.url.replace("&amp;", "&")
-                // TODO: Problem with the new version, it won't parse
+
                 val (authorBlock, postElements) = AwfulScraper.getPostElementsForSlack(correctedUrl)
                 val blocks = processElementsIntoSections(authorBlock, postElements)
                 val unfurlDetail = ChatUnfurlRequest.UnfurlDetail()
@@ -87,9 +91,11 @@ class PostUnroller {
 
             // Emoticons & Images
             if (element is Element && element.tag().normalName() == "img") {
-                if (element.attr("src").contains("/forumsystem/emoticons") || element.attr("src")
-                        .contains("/images/smilies")
+                // Title starts and ends with :, it's an emoticon
+                if (element.attr("src").contains("somethingawful.com") &&
+                    element.attr("title").matches(EMOTICON_REGEX)
                 ) {
+                    // TODO Some emoticons look like https://fi.somethingawful.com/safs/smilies/b/2/rip.001.gif
                     // Emoticon
                     currentTextBeingBuilt += element.attr("title")
                 } else {

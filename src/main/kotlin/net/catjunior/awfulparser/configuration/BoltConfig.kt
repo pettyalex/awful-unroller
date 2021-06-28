@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet
 class SlackApp {
     @Bean
     fun initSlackApp(postUnroller: PostUnroller): App {
+        // TODO: Enabling OAuth https://slack.dev/java-slack-sdk/guides/app-distribution
         val app = App()
         app.event(LinkSharedEvent::class.java, postUnroller::unrollPost)
         return app

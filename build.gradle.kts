@@ -28,6 +28,8 @@ dependencies {
 
 	// JSoup for parsing HTML
 	implementation("org.jsoup:jsoup:1.13.1")
+
+	// Mixpanel for monitoring
 }
 
 tasks.withType<KotlinCompile> {
