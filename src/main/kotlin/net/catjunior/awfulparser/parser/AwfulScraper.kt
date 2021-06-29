@@ -2,15 +2,10 @@ package net.catjunior.awfulparser.parser
 
 import com.slack.api.model.block.SectionBlock
 import com.slack.api.model.block.composition.MarkdownTextObject
-import net.catjunior.awfulparser.models.AwfulPost
-import net.catjunior.awfulparser.models.PostElement
-import net.catjunior.awfulparser.models.TextPostElement
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.Node
-import org.jsoup.nodes.TextNode
-import org.jsoup.select.Elements
 import org.springframework.stereotype.Component
 import java.net.URL
 
@@ -38,18 +33,6 @@ class AwfulScraper {
         fun getPostBodyWithoutQuotes(url: String): List<String> {
             val post = getPost(url)
             return post.select("td.postbody").textNodes().filter { !it.isBlank }.map { it.toString() }
-        }
-
-        fun getFullPostWithAuthor(url: String): AwfulPost {
-            val postElement = getPost(url)
-            val username = postElement.select("dt.author").text()
-            val postBodyWithoutQuotes =
-                postElement.select("td.postbody").textNodes().filter { !it.isBlank }.map { it.toString() }
-            val postElements = mutableListOf<PostElement>()
-
-            postElements.add(TextPostElement("*$username posted:*"))
-            postElements.addAll(postBodyWithoutQuotes.map { TextPostElement(it) })
-            return AwfulPost(postElements)
         }
 
         /**
