@@ -95,7 +95,6 @@ class PostUnroller {
                 if (element.attr("src").contains("somethingawful.com") &&
                     element.attr("title").matches(EMOTICON_REGEX)
                 ) {
-                    // TODO Some emoticons look like https://fi.somethingawful.com/safs/smilies/b/2/rip.001.gif
                     // Emoticon
                     currentTextBeingBuilt += element.attr("title")
                 } else {

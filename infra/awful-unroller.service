@@ -4,7 +4,15 @@ After=syslog.target
 
 [Service]
 WorkingDirectory=/opt/awful-unroller
-EnvironmentFile=awful-environment
+Environment="SLACK_BOT_TOKEN="
+Environment="SLACK_SIGNING_SECRET="
+Environment="SLACK_CLIENT_SECRET="
+Environment="SLACK_SCOPES="
+Environment="SLACK_USER_SCOPES="
+Environment="SLACK_INSTALL_PATH="
+Environment="SLACK_REDIRECT_URI_PATH="
+Environment="SLACK_OAUTH_COMPLETION_URL="
+Environment="SLACK_OAUTH_CANCELLATION_URL="
 ExecStart=/usr/bin/java -jar awfulparser.jar
 SuccessExitStatus=143
 
