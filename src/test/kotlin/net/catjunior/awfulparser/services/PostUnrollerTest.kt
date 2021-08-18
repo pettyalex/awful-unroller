@@ -13,8 +13,8 @@ internal class PostUnrollerTest {
 
     @Test
     fun processPostIntoBlocks() {
-        val postElements = AwfulScraper.getPostElementsForSlack("https://forums.somethingawful.com/showthread.php?noseen=0&threadid=3952517&perpage=40&pagenumber=180#post515405429")
-        val blocks = unroller.processElementsIntoSections(postElements)
+        val (authorBlock, postNodes) = AwfulScraper.getPostElementsForSlack("https://forums.somethingawful.com/showthread.php?noseen=0&threadid=3952517&perpage=40&pagenumber=180#post515405429")
+        val blocks = unroller.processElementsIntoSections(authorBlock, postNodes)
 
         println(blocks)
     }
