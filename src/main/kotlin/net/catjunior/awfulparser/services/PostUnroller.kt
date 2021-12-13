@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
-class PostUnroller {
+class PostUnroller(private val scraper: AwfulScraper) {
     companion object {
         private val EMOTICON_REGEX = Regex("^:.*:$")
     }
@@ -49,7 +49,7 @@ class PostUnroller {
             links.forEach { link ->
                 val correctedUrl = link.url.replace("&amp;", "&")
 
-                val (authorBlock, postElements) = AwfulScraper.getPostElementsForSlack(correctedUrl)
+                val (authorBlock, postElements) = scraper.getPostElementsForSlack(correctedUrl)
                 val blocks = processElementsIntoSections(authorBlock, postElements)
                 val unfurlDetail = ChatUnfurlRequest.UnfurlDetail()
                 unfurlDetail.blocks = blocks

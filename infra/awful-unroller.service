@@ -13,8 +13,11 @@ Environment="SLACK_INSTALL_PATH="
 Environment="SLACK_REDIRECT_URI_PATH="
 Environment="SLACK_OAUTH_COMPLETION_URL="
 Environment="SLACK_OAUTH_CANCELLATION_URL="
+Environment="AWFUL_USERNAME="
+Environment="AWFUL_PASSWORD="
 ExecStart=/usr/bin/java -jar awfulparser.jar
 SuccessExitStatus=143
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
