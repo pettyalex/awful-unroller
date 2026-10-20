@@ -1,0 +1,9 @@
+name = "awful-unroller"
+main = "src/index.ts"
+compatibility_date = "2024-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+# SLACK_SCOPES = "links:read,links:write"
+# SLACK_OAUTH_COMPLETION_URL = "https://example.com/landing/success"
+# SLACK_OAUTH_CANCELLATION_URL = "https://example.com/landing/failure"

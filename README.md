@@ -1,23 +1,43 @@
 # Something Awful Slack Unroller
 
-This is a little tool that will take links to specific somethingawful posts, and present them to
-Slack in a nice preview.
+This repository contains two implementations of the Something Awful Slack post unroller service:
 
-## Current Snapshot of Functionality
+1. **[`cloudflare-worker/`](cloudflare-worker/):** The modern, serverless implementation built in **TypeScript** for **Cloudflare Workers**. It features low-latency execution, full BBCode/quote/emoticon/image block formatting, native Web Crypto verification, and immediate 200 OK acknowledgment with background unfurling via `ctx.waitUntil(...)`.
+2. **[`kotlin-app/`](kotlin-app/):** The original, untouched Kotlin / Spring Boot 2 application using Slack Bolt and Jsoup.
 
-![img.png](docs/demo.png)
-Right now, it is only able to display text.
+---
 
-## Shortcomings:
+## Cloudflare Worker (TypeScript)
 
-* Doesn't handle emoji, omits them and breaks the text into a new line instead
-* Ignores images
-* Omits links
-* Does nothing with quotes
+Detailed instructions for setup, configuration, local testing, and deployment are in [`cloudflare-worker/README.md`](cloudflare-worker/README.md).
 
-## Deployment:
+### Quickstart
 
-There is a systemd service file in `infra/` but I have not checked in the secrets. A fat, executable
-jar can be built with `./gradlew bootJar`, and then that executable needs to be deployed somewhere
-that Slack can be pointed to it through the slack app integration.
+```bash
+cd cloudflare-worker
 
+# Install dependencies
+npm install
+
+# Run unit tests
+npm test
+
+# Run type checker
+npm run typecheck
+
+# Deploy to Cloudflare
+npm run deploy
+```
+
+---
+
+## Original Kotlin Application (Spring Boot)
+
+Detailed documentation is in [`kotlin-app/README.md`](kotlin-app/README.md).
+
+### Build
+
+```bash
+cd kotlin-app
+./gradlew bootJar
+```

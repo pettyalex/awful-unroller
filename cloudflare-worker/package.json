@@ -1,0 +1,24 @@
+{
+  "name": "awful-unroller-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker to unfurl Something Awful forum posts in Slack",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "cheerio": "1.0.0-rc.12"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240405.0",
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5",
+    "vitest": "^1.5.0",
+    "wrangler": "^3.50.0"
+  }
+}
